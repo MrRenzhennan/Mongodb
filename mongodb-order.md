@@ -68,3 +68,26 @@ two
 > db.one.drop()
 true
 ```
+## Mongodb文档操作
+文档的数据结构和JSON基本一样,所有存储在集合中的数据都是BSON格式。  
+BSON是一种类json的一种二进制形式的存储格式,简称Binary JSON。
+### 插入方法：
+`db.collectionName.insert(doc)`  
+`db.collectionName.save(doc)`
+```
+直接插入：
+> db.one.insert({"name":"lisi", "age":12})
+WriteResult({ "nInserted" : 1 })
+> db.one.find()
+{ "_id" : ObjectId("578b4fc554ec6d203080b398"), "name" : "lisi", "age" : 12 }
+>
+
+先保存于变量中：
+> doc = {"name":"zhangsan", "age":13};
+{ "name" : "zhangsan", "age" : 13 }
+> db.one.insert(doc);
+WriteResult({ "nInserted" : 1 })
+>
+```
+如果不指定`_id` 字段 `save() 方法`类似于 `insert() 方法`。如果指定` _id` 字段，则会`更新`该 `_id`的数据。
+

@@ -202,7 +202,7 @@ WriteResult({ "nRemoved" : 1 })
 WriteResult({ "nRemoved" : 2 })
 ```
 ## 查找文档
-查找方法：  
+#### 查找方法：  
 `db.collectionName.find()`  
 `db.collectionName.findOne()`  
 查找所有文档：  
@@ -219,4 +219,102 @@ db.collectionName.find({"age": {$not: {$mod: [10,0]}}})// 查询年龄不能被1
 db.collectionName.find({"course": {$all: ["english", "math"]}})  //查询course包含english和math的文档
 db.firstClass.find({"course": {$size : 3}})  //查找　course数组元素个数等于３的文档
 ```
+按照and条件查询：同时满足所有条件
+```
+db.collectionName.find({"name":"lisi", "age":10})  // 查找name="lisi", age=10的文档
+db.collectionName.find({"name":"lisi", "age":10}).pretty()  //按照合适的格式显示　
+```
+按照or条件查询：满足其中的一个条件即可
+```
+db.collectionName.find({$or: [{"age":10}, {"age": 11}]}).pretty() //查找age=10 or age=11的文档
+```
+and 和 or 条件混合使用：
+```
+//查找　name=lisi and (age=10 or age=11)的文档
+db.collectionName.find({"name":"lisi", $or:[{"age":10},{"age": 11}]}).pretty()
+```
+其他条件
+```
+控制查询到的文档的数量：limit()
+db.collectionName.find().limit(2) //输出查询的到的前两条文档
 
+跳过查询到的前几条文档,输出其他文档：skip()
+db.collectionName.find().skip(1) //跳过前１条文档，从后边开始显示
+
+统计查询到的文档个数：　count()
+db.collectionName.find().count()
+
+对查询结果进行排序：　　　　　　
+db.collectionName.find().sort({"age": 1}) //按照age值进行升序排列
+db.collectionName.find().sort({"age": -1}) //按照age值进行降序排列
+
+将查询到的文档按照指定的域输出：　　　
+db.collectionName.find({}, {"name": 1, "age": 1}) //查询到的文档，仅仅输出name和age两个域
+
+```
+# Mongodb索引
+索引是为了提高查询效率，使用索引可快速访问数据库表中的特定信息。索引是对值进行排序的一种结构。  
+如果没有索引，那么查找时会扫描整个集合，数据量大时效率会很低  
+创建索引：
+```
+//1升序索引，　-1 降序索引
+db.collectionName.ensureIndex({key: 1})
+db.collectionName.ensureIndex({"age": -1, "name": 1})
+
+//创建唯一索引，name域不可以有重复的值
+db.collectionName.ensureIndex({"name": 1}, {"unique": true})
+
+//删除索引
+db.collectionName.dropIndex({"name":1})
+//删除所有索引
+db.collectionName.dropIndexes()
+
+```
+# Mongodb聚合
+aggregate(聚合)主要用于文档数据的统计计算(平均值,求和，个数等)。
+#### 统计集合中文档个数
+`db.collectionName.count()`
+#### 统计集合中符合条件的文档个数
+`db.collectionName.count({“age”: 10})`
+#### 显示集合中属性值不一样的结果
+ 显示集合中name值不一样的结果  
+ `db.runCommand({“distinct”:“collectionName”}, {“key”: “name”})`
+#### `db.collectionName.aggregate(): `
+```json
+//按照name值分组，并计算每组的个数
+db.collectionName.aggregate([{$group:{_id:"$name", num:{$sum:1}}}])
+
+//按照name值分组，并计算每组中年龄的总和
+db.collectionName.aggregate([{$group:{_id:"$name", num:{$sum:"$age"}}}])
+
+//按照name值分组，并计算每组中年龄的平均值
+db.collectionName.aggregate([{$group:{_id:"$name", num:{$avg:"$age"}}}])
+
+//按照name值分组，并计算每组中年龄的最小值
+db.collectionName.aggregate([{$group:{_id:"$name", num:{$min:"$age"}}}])
+
+//按照name值分组，并计算每组中年龄的最大值
+db.collectionName.aggregate([{$group:{_id:"$name", num:{$max:"$age"}}}])
+
+//按照name值分组，并计算每组中第一个年龄值
+db.collectionName.aggregate([{$group:{_id:"$name", num:{$first:"$age"}}}])
+
+//按照name值分组，并计算每组中最后一个年龄值
+db.collectionName.aggregate([{$group:{_id:"$name", num:{$last:"$age"}}}])
+```
+# Mongodb聚合管道
+MongoDB聚合管道用于在一个条件处理完毕之后将结果传递给下一个条件进行处理。
+```
+$project: 用于修改文档结构。　　　　　　　　　　　　
+$match：用于过滤数据，只输出符合条件的文档。
+$limit：用来限制MongoDB聚合管道返回的文档数。
+$sort：将输入文档排序后输出。　　　　　
+```
+举例
+```
+db.collectionName.aggregate({$project:{name:1, age:1, newname:"$oldname"}}) //修改域名　　
+db.collectionName.aggregate({$project:{_id:0 ,name:1, age:1}}) //删除_id, 其他域不可删  
+db.firstClass.aggregate([{$project:{name:1, age:1, course:1, test:{$add:["$age",10]}}}]) //添加新域
+db.collectionName.aggregate([{$match:{"age":10}}, {$limit:2}]) //显示输出2条　　
+db.collectionName.aggregate([{$match:{"age":10}}, {$sort: {"name": 1}}]) //输出按照name升序排列　        　
+```

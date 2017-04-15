@@ -1,23 +1,23 @@
-# Mongodb 的安装
-## 添加公共的keyserver
+# Mongodb 的安装----->Ubuntu下
+## 第一步：添加公共的keyserver
 下载源文件
 ```
 $ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
 ```
 
-## 配置命令版本
+## 第二步：配置命令版本
 下面这条命令是 创建`/etc/apt/sources.list.d/mongodb-org-3.4.list`文件，  
 将`deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse`写入这个文件(echo 原样输出)  
 这样做的作用是mongodb的命令在ubuntu下适用
 ```
 $ echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
 ```
-## 重新加载本地包数据库
+## 第三步：重新加载本地包数据库
 更新本地数据，安装mongodb的最新的稳定版本
 ```
 $ sudo apt-get update
 ```
-## 安装mongodb包
+## 第四步：安装mongodb包
 ```
 $ sudo apt-get install -y mongodb-org
 ```

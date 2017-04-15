@@ -39,3 +39,24 @@ connect@src/mongo/shell/mongo.js:237:13
 exception: connect failed
 
 ```
+
+# Robomongo简介
+## MongoDB 管理工具
+Robomongo 是一个基于 Shell 的跨平台开源 MongoDB 管理工具。  
+嵌入了 JavaScript 引擎和 MongoDB mogo 。只要你会使用 mongo shell ，你就会使用 Robomongo。  
+提供语法高亮、自动完成、差别视图等，Robomongo与MongoDB之间的关系就相当于PHPMyAdmin与MySQL之间的关系。  
+##　特性
+### 对MongoDB Shell的完美支持
+Robomongo内置V8引擎来驱动mongo命令行工具，所以你通过mongo命令行工具的所有操作都可以通Robomongo来完成。其本身提供语法高亮，自动完成，并且支持不同的结果查询模式（文本，树，或表格）
+### 多命令行
+可以在Robomongo打开多个命令行窗口。　　
+
+注：可以通过按“Ctrl + T”复制命令行窗口。
+### 支持多结果查询
+Robomongo命令行可以通过编写多条查询语句来一次性获取多个查询结果集　　
+注：可以通过按“F10”改变结果集的展示方式，即水平和垂直方向的切换。
+### 支持命令自动完成
+Robomongo支持对所有的对象和函数的自动完成功能。　　
+注：可以通过输入函数名，然后按“Ctrl + Enter”来获取函数的具体定义
+# 安装Robomongo
+[点击查看安装](./Robomongo.md)

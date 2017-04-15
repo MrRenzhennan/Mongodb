@@ -62,16 +62,16 @@ two
 > db.two.find()
 { "_id" : ObjectId("58f18cd957394eff252bc86f"), "name" : "lisi", "age" : 12 }
 ```
-### 集合的删除
+### 集合的删除   
 使用 `db.collectionName.drop()`删除集合
 ```
 > db.one.drop()
 true
 ```
-# Mongodb文档操作
+# Mongodb文档操作   
 文档的数据结构和JSON基本一样,所有存储在集合中的数据都是BSON格式。  
 BSON是一种类json的一种二进制形式的存储格式,简称Binary JSON。
-## 插入方法：
+## 插入方法：    
 `db.collectionName.insert(doc)`  
 `db.collectionName.save(doc)`
 ```
@@ -89,8 +89,8 @@ WriteResult({ "nInserted" : 1 })
 WriteResult({ "nInserted" : 1 })
 >
 ```
-### 如果不指定`_id` 字段 `save() 方法`类似于 `insert() 方法`。如果指定` _id` 字段，则会`更新`该 `_id`的数据。
-## 更新文档
+### 如果不指定`_id` 字段 `save() 方法`类似于 `insert() 方法`。如果指定` _id` 字段，则会`更新`该 `_id`的数据。      
+## 更新文档    
 更新方法：
 `db.collectionName.update()`  
 `db.collectionName.save()`
@@ -169,8 +169,8 @@ db.firstClass.update({"age":20}, {$rename: {"course": "class"}}, false,false)
 //在某个数组域中添加数据(数据不存在时，才会添加)
 db.firstClass.update({"age":20}, {$addToSet: {"course": "python"}}, false,true)
 ```
-## 删除文档
-#### 删除文档：
+## 删除文档  
+#### 删除文档：  
 `db.collectionName.remove()`
 删除格式
 ```

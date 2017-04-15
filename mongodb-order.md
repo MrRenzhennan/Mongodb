@@ -200,5 +200,23 @@ WriteResult({ "nRemoved" : 1 })
 
 > db.firstClass.remove({})　//删除该集合中所有的文档　
 WriteResult({ "nRemoved" : 2 })
-
 ```
+## 查找文档
+查找方法：  
+`db.collectionName.find()`  
+`db.collectionName.findOne()`  
+查找所有文档：  
+`db.collectionName.find()`  
+按照条件操作符查找：  
+```
+db.collectionName.find({"age": {$lt: 10}})   //　查询年龄小于　10的文档
+db.collectionName.find({"age": {$lte: 10}})   //　查询年龄小于等于　10的文档
+db.collectionName.find({"age": {$gte: 10}})   //　查询年龄大于等于　10的文档
+db.collectionName.find({"age": {$gt: 10}})   //　查询年龄大于　10的文档
+db.collectionName.find({"age": {$ne: 10}})   //　查询年龄不等于　10的文档
+db.collectionName.find({"age": {$mod: [10,0]}})   //　查询年龄能被10整除文档
+db.collectionName.find({"age": {$not: {$mod: [10,0]}}})// 查询年龄不能被10整除的文档
+db.collectionName.find({"course": {$all: ["english", "math"]}})  //查询course包含english和math的文档
+db.firstClass.find({"course": {$size : 3}})  //查找　course数组元素个数等于３的文档
+```
+
